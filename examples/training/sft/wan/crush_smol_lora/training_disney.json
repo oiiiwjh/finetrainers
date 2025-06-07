@@ -1,7 +1,7 @@
 {
   "datasets": [
     {
-      "data_root": "/home/wjh/projects/finetrainers/dataset/crush-smol",
+      "data_root": "/home/wjh/projects/finetrainers/datasets/crush-smol",
       "dataset_type": "video",
       "id_token": "PIKA_CRUSH",
       "video_resolution_buckets": [

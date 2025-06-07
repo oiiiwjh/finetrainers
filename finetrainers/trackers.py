@@ -28,6 +28,9 @@ class WandbTracker(BaseTracker):
 
         # WandB does not create a directory if it does not exist and instead starts using the system temp directory.
         pathlib.Path(log_dir).mkdir(parents=True, exist_ok=True)
+        # get proxy
+        # import os
+        # proxy_url = os.environ.get("https_poxy") or os.environ.get("http_proxy")
 
         self.run = wandb.init(project=experiment_name, dir=log_dir, config=config)
         logger.info("WandB logging enabled")

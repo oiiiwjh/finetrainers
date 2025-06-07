@@ -180,8 +180,11 @@ validation_dataset/
 
 # customed
 logs/
+logs
 finetrainers_ckpts/
+finetrainers_ckpts
 dataset/
 datasets/
+datasets
 # difusers, 'git clone https://github.com/huggingface/diffusers; python setup.py install' will create this folder
 diffusers/ 

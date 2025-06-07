@@ -4,6 +4,7 @@ set -e -x
 
 # export TORCH_LOGS="+dynamo,recompiles,graph_breaks"
 # export TORCHDYNAMO_VERBOSE=1
+export WANDB_BASE_URL="https://api.bandw.top" # [WANDB_BASE_URL can be "https://wandb.wan-ai.com" or "https://wandb.ai"]
 export WANDB_MODE="online" # [WANDB_MODE can be "online", "offline", or "disabled"]
 export NCCL_P2P_DISABLE=1
 export TORCH_NCCL_ENABLE_MONITORING=0
@@ -14,8 +15,8 @@ export FINETRAINERS_LOG_LEVEL="DEBUG" # in constant.py, [DEBUG, INFO, WARNING, E
 BACKEND="ptd"
 
 # In this setting, I'm using 2 GPUs on a 4-GPU node for training
-NUM_GPUS=2
-CUDA_VISIBLE_DEVICES="6,7"
+NUM_GPUS=4
+CUDA_VISIBLE_DEVICES="2,3,6,7"
 
 # Check the JSON files for the expected JSON format
 TRAINING_DATASET_CONFIG="examples/training/sft/wan/crush_smol_lora/training_disney.json"
@@ -56,7 +57,7 @@ HSDP_2_2="--parallel_backend $BACKEND --pp_degree 1 --dp_degree 2 --dp_shards 2 
 
 # Parallel arguments
 parallel_cmd=(
-  $DDP_2
+  $DDP_4
 )
 
 # Model arguments
@@ -76,7 +77,7 @@ dataset_cmd=(
   --dataset_config $TRAINING_DATASET_CONFIG
   --dataset_shuffle_buffer_size 10
   --enable_precomputation
-  --precomputation_items 25 # 25=50videos/2 
+  --precomputation_items 15 # 25=50videos/2 
   --precomputation_once
 )
 
@@ -137,6 +138,8 @@ miscellaneous_cmd=(
   --init_timeout 600
   --nccl_timeout 600
   --report_to "wandb"
+  --logging_dir 'lg'
+  # --logging_dir "/home/wjh/projects/finetrainers/logs/wandb" # logs: ln -s /share/wjh/logs/finetrainers/
 )
 
 # Execute the training script
